@@ -27,9 +27,10 @@ async function bootstrap() {
   };
 
   const config = new DocumentBuilder()
-    .setTitle('NestJS Swagger API Example')
-    .setDescription('Provides an example API with Authentication, Users, File Upload')
+    .setTitle('HAAPI - NestJS Swagger API')
+    .setDescription('Provides an API with Authentication, Users, File Upload and other features')
     .setVersion('1.0')
+    .addBearerAuth()  
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, SwaggerCustomOptions);
