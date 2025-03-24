@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { AuthResponse, RegisterResponse } from './dto/auth.response';
+import { AuthResponse, ConflictResponse, RegisterResponse } from './dto/auth.response';
 
 @ApiTags('Auth') // ✅ Swagger group
 @Controller('auth')
@@ -49,7 +49,13 @@ export class AuthController {
     description: 'User registered successfully',
     type: RegisterResponse,
   })
-  async register(@Body() body: RegisterDto) {
-    return this.authService.register(body.username, body.password);
+  @ApiResponse({
+    status: 409,
+    description: 'Username or email already exists',
+    type: ConflictResponse,
+  })
+  async register(@Body() registerDto: RegisterDto) {
+    const { username, password, email } = registerDto;
+    return this.authService.register(username, password, email);
   }
 }
